@@ -1,3 +1,5 @@
+import os
+
 hoehe = 3
 breite = 3
 spielfeld = [zahl + 1 for zahl in range(hoehe * breite)]
@@ -37,13 +39,15 @@ def spielzug(spielfeld):
       print("Feld ungueltig!")
 
 
-print("==== Tic Tac Toe ====")
 zu_ende = False
 spieler = 1
 
 while not zu_ende:
-  print(f"Spieler {spieler} ist dran:")
+  os.system('clear')
+  print("==== Tic Tac Toe ====")
+
   zeige(spielfeld)
+  print(f"Spieler {spieler} ist dran.")
   spielzug(spielfeld)
   if sieg(spielfeld):
     print(f"Spieler {spieler} hat gewonnen:")
