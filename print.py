@@ -1,0 +1,5 @@
+print("Hallo", "Raoul!")
+print()
+print(12344)
+print(a=1)
+ergebnis = print(1, 2, 3, 4, 5, 6, "\n", 7, 8 ,9)
