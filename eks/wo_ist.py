@@ -7,35 +7,108 @@
 #
 
 import sys
+import json
+import os
 
 argumente = sys.argv
+
+
+def finde(argumente):
+    if len(argumente) != 3:
+        print("Falsche Anzahl von Argumenten.")
+        exit(1)
+    gegenstand = argumente[2]
+    # Wenn die Datei nicht existiert, kann der Gegenstand nicht gesucht werden.
+    if not os.path.exists("gegenstaende.json"):
+        print("Keine Gegenstände vorhanden.")
+        exit(0)
+
+    # Lade Gegenstände.
+    gegenstaende = dict()
+    try:
+        gegenstaende = json.load(open("gegenstaende.json"))
+    except:
+        print("Fehler: Gegenstände konnten nicht geladen werden!")
+        exit(1)
+
+    # Suche Gegenstand in allen Orten.
+    for ort in gegenstaende:
+        if gegenstand in gegenstaende[ort]:
+            print(gegenstand, "liegt in", ort)
+            exit(0)
+
 
 if len(argumente) == 1:  # Fehler, kein Befehl angegeben.
     print("Fehler: Gib einen Befehl an.")
 else:
     befehl = argumente[1]
     if befehl == "lege":  # lege <Gegenstand> in <Ablageort>
+
+        if len(argumente) != 5:
+            print("Falsche Anzahl von Argumenten.")
+            exit(1)
+
         gegenstand = argumente[2]
         ablageort = argumente[4]
         print("Ich lege", gegenstand, "in", ablageort)
 
-        speicher_datei = open("gegenstaende.txt", "r")
-        alle_ablageorte = speicher_datei.readlines()
-        speicher_datei.close()
+        gegenstaende = dict()
+        # Gegenstände laden
+        if os.path.exists("gegenstaende.json"):
+            try:
+                gegenstaende = json.load(open("gegenstaende.json"))
+            except:
+                print("Fehler: Gegenstände konnten nicht geladen werden!")
+                exit(1)
 
-        ablageort_existiert = False
-        neue_ablageorte = []
-        for ort in alle_ablageorte:
-            if ort.split(":")[0] == ablageort:
-                neue_ablageorte.append(
-                    ort.replace("\n", "") + " " + gegenstand + "\n")
-                ablageort_existiert = True
-            else:
-                neue_ablageorte.append(ort)
+        # Falls der Ort nicht existiert, wird er angelegt.
+        if not ablageort in gegenstaende:
+            gegenstaende[ablageort] = []
 
-        if not ablageort_existiert:
-            neue_ablageorte.append(ablageort + ":" + gegenstand)
+        # Falls der Gegenstand schon existiert, wird er entfernt.
+        for ort in gegenstaende:
+            if gegenstand in gegenstaende[ort]:
+                gegenstaende[ort].remove(gegenstand)
 
-        speicher_datei = open("gegenstaende.txt", "w")
-        speicher_datei.writelines(neue_ablageorte)
-        speicher_datei.close()
+        # Gegenstand wird an den Ort gelegt.
+        gegenstaende[ablageort].append(gegenstand)
+
+        # Gegenstände speichern.
+        json.dump(gegenstaende, open("gegenstaende.json", "w"))
+    elif befehl == "finde":  # finde <Gegenstand>
+    elif befehl == "entferne":  # entferne <Gegenstand>
+        if len(argumente) != 3:
+            print("Falsche Anzahl von Argumenten.")
+            exit(1)
+        gegenstand = argumente[2]
+        # Wenn die Datei nicht existiert
+        # kann der Gegenstand nicht entfernt werden.
+        if not os.path.exists("gegenstaende.json"):
+            print("Keine Gegenstände vorhanden.")
+            exit(0)
+
+        # Lade Gegenstand.
+        gegenstaende = dict()
+        try:
+            gegenstaende = json.load(open("gegenstaende.json"))
+        except:
+            print("Fehler: Gegenstände konnten nicht geladen werden!")
+            exit(1)
+
+        # Falls der Gegenstand schon existiert, wird er entfernt.
+        for ort in gegenstaende:
+            if gegenstand in gegenstaende[ort]:
+                gegenstaende[ort].remove(gegenstand)
+                print("Gegenstand entfernt.")
+                json.dump(gegenstaende, open("gegenstaende.json", "w"))
+                exit(0)
+
+        print("Gegenstand ist nicht vorhanden.")
+        exit(0)
+    else:
+        print("Befehl unbekannt!")
+
+# Bugs
+# 1) Unbekannter Befehl wird einfach ignoriert. --OK
+# 2) Absturz, wenn Datei nicht gelesen werden kann.
+# 3) Falsche Anzahl an Argumenten führt zu Absturz.
