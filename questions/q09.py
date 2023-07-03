@@ -1,7 +1,7 @@
-# Was gibt das folgende Programm aus?
-
 value01 = 1
+output = 0
 
 while value01 < 6:
-    print(value01)
+    output += value01
     value01 += 2
+print(output)

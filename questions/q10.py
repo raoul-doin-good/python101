@@ -1,5 +1,3 @@
-# Was gibt das folgende Programm aus?
-
 value01 = 10
 value02 = 0
 

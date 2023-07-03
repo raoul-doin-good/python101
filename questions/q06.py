@@ -1,6 +1,7 @@
-# Was gibt das folgende Programm aus?
-
 my_list = [1, 2, 3]
 
+output = 0
 for value in my_list:
-    print(value)
+    output += value
+
+print(output)

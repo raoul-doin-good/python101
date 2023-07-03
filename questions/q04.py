@@ -1,30 +1,31 @@
-# Was gibt das folgende Programm aus?
-
+output = ""
 if 123:
-    print("1")
+    output += "1"
 else:
-    print("2")
+    output += "2"
 
 
 if "hallo":
-    print("3")
+    output += "3"
 else:
-    print("4")
+    output += "4"
 
 
 if "":
-    print("5")
+    output += "5"
 else:
-    print("6")
+    output += "6"
 
 
 if [1, 2]:
-    print("7")
+    output += "7"
 else:
-    print("8")
+    output += "8"
 
 
 if []:
-    print("9")
+    output += "9"
 else:
-    print("10")
+    output += "10"
+
+print(output)

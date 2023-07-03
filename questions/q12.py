@@ -1,5 +1,3 @@
-# Was gibt das folgende Programm aus?
-
 my_list = []
 value01 = 1
 
