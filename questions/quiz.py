@@ -16,12 +16,16 @@ if __name__ == "__main__":
         # Pass names of quiz files to run a specific questions.
         quiz_files = sys.argv[1:]
     else:
-        # Normal mode: run all quiz files.
+        # Normal mode: run all quiz files in this directory.
         quiz_dir = os.path.dirname(__file__)
-
         quiz_files = glob.glob(os.path.join(quiz_dir, "*.py"))
+
+        # Remove this script.
         quiz_files.remove(__file__)
+
+        # Take 10 ramdon questions.
         random.shuffle(quiz_files)
+        quiz_files = quiz_files[:10]
 
     num_questions = len(quiz_files)
     points = 0
